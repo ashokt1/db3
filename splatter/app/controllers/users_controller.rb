@@ -1,3 +1,4 @@
+# Author: Tanvi
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
