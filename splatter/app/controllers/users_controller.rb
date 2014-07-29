@@ -48,6 +48,7 @@ class UsersController < ApplicationController
     head :no_content
   end
   
+  # Enable whitelisting for parameter passing
   private
 	def user_params(params)
 	params.permit(:email, :password, :name, :blurb)
