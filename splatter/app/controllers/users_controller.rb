@@ -54,4 +54,9 @@ class UsersController < ApplicationController
 	def user_params(params)
 	params.permit(:email, :password, :name, :blurb)
 	end
+	
+	def splatts
+		@user = User.find(params[:id])
+		render json: @user.splatts
+	end
 end
