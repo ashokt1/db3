@@ -59,4 +59,50 @@ class UsersController < ApplicationController
 		@user = User.find(params[:id])
 		render json: @user.splatts
 	end
+	
+ # Users followed by the indicated user
+	def show_follows
+		@user = User.find(params[:id])
+		render json: @user.follows #who that user follows
+	end
+
+ # Method returns a list of followers of a given user
+ 	def show_followers
+		@user = User.find(params[:id])
+		render json: user.followed_by #followers of a given user
+	end
+
+ # Add user to list of users followed by user with id
+	def add_follows
+		#params[:id] is the user who follows
+		#params[:follows_id] user to be followed
+		
+		#make follower
+		@follower = User.find(params[:id])
+		
+		#make followed
+		@followed = User.find(params[:follows_id])
+		
+		#adding to list, follows is a list of user objects
+		if @follower.follows << @followed
+			head :no_content 
+		else
+			render json: @follower.errors, status: :unprocessable_entity
+	end
+
+ # Delete user id 2 from list of users followed by user id 1
+	def delete_follows
+	
+		#make a follower
+		@follower = User.find(params[:id])
+		
+		#make a followed
+		@followed= User.find(params[:follows_id])
+		
+		#deleting from list
+		if @follower.follows.delete(followed)
+			head :no_content
+		else
+			render json: @follower.errors, status: :unprocessable_entity
+	end
 end
