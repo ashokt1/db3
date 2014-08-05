@@ -105,4 +105,13 @@ class UsersController < ApplicationController
 		else
 			render json: @follower.errors, status: :unprocessable_entity
 	end
+	
+ # GET /users/splatts-feed/1
+	def splatts_feed
+		@feed = Splatt.find_by_sql("SELECT user_id FROM splatts" 
+								   "JOIN follows ON follows.followed_id = splatts.user_id"
+								   "WHERE follows.follower_id = #{params[:id]} ORDER BY created_at DESC")
+		
+		render json: @feed
+	end
 end
