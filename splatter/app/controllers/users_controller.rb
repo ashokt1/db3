@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
 
-    render json: @user
+    #render json: @user
   end
 
   # POST /users
@@ -88,6 +88,7 @@ class UsersController < ApplicationController
 			head :no_content 
 		else
 			render json: @follower.errors, status: :unprocessable_entity
+		end
 	end
 
  # Delete user id 2 from list of users followed by user id 1
@@ -104,14 +105,15 @@ class UsersController < ApplicationController
 			head :no_content
 		else
 			render json: @follower.errors, status: :unprocessable_entity
+		end
 	end
 	
  # GET /users/splatts-feed/1
-	def splatts_feed
-		@feed = Splatt.find_by_sql("SELECT user_id FROM splatts" 
-								   "JOIN follows ON follows.followed_id = splatts.user_id"
-								   "WHERE follows.follower_id = #{params[:id]} ORDER BY created_at DESC")
+	# def splatts_feed
+		# @feed = Splatt.find_by_sql("SELECT user_id FROM splatts" 
+								   # "JOIN follows ON follows.followed_id = splatts.user_id"
+								   # "WHERE follows.follower_id = #{params[:id]} ORDER BY created_at DESC")
 		
-		render json: @feed
-	end
+		# render json: @feed
+	# end
 end
