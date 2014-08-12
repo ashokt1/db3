@@ -50,15 +50,18 @@ class UsersController < ApplicationController
   end
   
   # Enable whitelisting for parameter passing
+  
+  def splatts
+		@user = User.find(params[:id])
+		render json: @user.splatts
+	end
+	
   private
 	def user_params(params)
 	params.permit(:email, :password, :name, :blurb)
 	end
 	
-	def splatts
-		@user = User.find(params[:id])
-		render json: @user.splatts
-	end
+	
 	
  # Users followed by the indicated user
 	def show_follows

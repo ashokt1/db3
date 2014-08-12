@@ -10,6 +10,9 @@ Splatter::Application.routes.draw do
   
   get 'users/splatts-feed/:id' => 'users#splatts_feed'
   
+  # get 'splatts/:id'
+  # post 'splatts'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
