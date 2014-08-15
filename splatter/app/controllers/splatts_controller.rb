@@ -18,7 +18,7 @@ class SplattsController < ApplicationController
   # POST /splatts
   # POST /splatts.json
   def create
-    @splatt = Splatt.new(splatt_params(params[:splatt]))
+    @splatt = Splatt.new(splatts_params(params[:splatt]))
 
     if @splatt.save
       render json: @splatt, status: :created, location: @splatt
@@ -29,15 +29,15 @@ class SplattsController < ApplicationController
 
   # PATCH/PUT /splatts/1
   # PATCH/PUT /splatts/1.json
-  # def update
-    # @splatt = Splatt.find(params[:id])
+   def update
+     @splatt = Splatt.find(params[:id])
 
-    # if @splatt.update(params[:splatt])
-      # head :no_content
-    # else
-      # render json: @splatt.errors, status: :unprocessable_entity
-    # end
-  # end
+     if @splatt.update(params[:splatt])
+      head :no_content
+    else
+       render json: @splatt.errors, status: :unprocessable_entity
+     end
+  end
 
   # DELETE /splatts/1
   # DELETE /splatts/1.json

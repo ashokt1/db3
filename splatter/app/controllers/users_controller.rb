@@ -56,11 +56,6 @@ class UsersController < ApplicationController
 		render json: @user.splatts
 	end
 	
-  private
-	def user_params(params)
-	params.permit(:email, :password, :name, :blurb)
-	end
-	
 	
 	
  # Users followed by the indicated user
@@ -72,7 +67,7 @@ class UsersController < ApplicationController
  # Method returns a list of followers of a given user
  	def show_followers
 		@user = User.find(params[:id])
-		render json: user.followed_by #followers of a given user
+		render json: @user.followed_by #followers of a given user
 	end
 
  # Add user to list of users followed by user with id
@@ -104,19 +99,26 @@ class UsersController < ApplicationController
 		@followed= User.find(params[:follows_id])
 		
 		#deleting from list
-		if @follower.follows.delete(followed)
+		if @follower.follows.destroy(@followed)
 			head :no_content
 		else
 			render json: @follower.errors, status: :unprocessable_entity
 		end
 	end
 	
- # GET /users/splatts-feed/1
-	# def splatts_feed
-		# @feed = Splatt.find_by_sql("SELECT user_id FROM splatts" 
-								   # "JOIN follows ON follows.followed_id = splatts.user_id"
-								   # "WHERE follows.follower_id = #{params[:id]} ORDER BY created_at DESC")
+	# GET /users/splatts-feed/1
+	 def splatts_feed
+		@feed = Splatt.find_by_sql("SELECT * FROM splatts JOIN follows ON follows.followed_id = splatts.user_id
+								   WHERE follows.follower_id = #{params[:id]} ORDER BY created_at DESC")
 		
-		# render json: @feed
-	# end
+		 render json: @feed
+	 end
+	
+  private
+	def user_params(params)
+	params.permit(:email, :password, :name, :blurb)
+	end
+	
+	
+ 
 end
