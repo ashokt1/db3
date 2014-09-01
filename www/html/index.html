@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="splatter-web">
+	<head>
+		<title>Basic Splatter Client</title>
+		<script src="angular.min.js"></script>
+		<script src="angular-resource.js"></script>
+		<script src="app.js"></script>
+	</head>
+	<body>
+		<div ng-controller="UserController as user">
+			<!-- Add your HTML and Angular code below -->
+				<p> {{user.hello}} </p>
+				<p> {{user.u.name}} </p>
+				
+			<div ng-repeat="splatt in user.feed">
+				<p> {{splatt.body}} </p>
+			</div>
+			
+			<form name="myForm" ng-controller="UpdateFormController as form" ng-submit="form.updateUser(user)">
+				<input type="text" ng-data="form.data.name" />
+				<input type="submit" value="Update user" />
+			</form>
+			
+			<!-- Add your HTML and Angular code above -->
+			
+		</div>
+		
+		<!-- A new user shall be able to create an account -->
+		<div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="CreateNewUser as form" ng-submit="form.createUser(user)">
+				<p> E-mail address: <input type="email" ng-data="form.data.email" />  </p>
+				<p> Name: </label> <input type="text" ng-data="form.data.name" /> </p>
+				<p> Password: </label> <input type="password" ng-data="form.data.password" /> </p>	
+				<input type="submit" value="Create New User" />
+			</form>
+		</div>
+		</br>
+				
+		<!-- An existing user shall be able to sign in -->
+		<div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="ExistingUserSignIn as form" ng-submit="form.existingUser(user)">
+				<p> E-mail address: </label> <input type="email" ng-data="form.data.email" /> </p> 
+				<p> Password: </label> <input type="password" ng-data="form.data.password" /> </p> 
+				<input type="submit" value="Sign In" />
+			</form>
+		</div>
+		</br>
+		
+		<!-- An existing user shall be able to edit name and blurb fields -->
+		<div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="EditDetails as form" ng-submit="form.editDetails(user)">
+				<p> Name <input type="name" ng-data="form.data.name" /> </p> 
+				<p> Blurb <input type="text" ng-data="form.data.blurb" /> </p> 
+				<input type="submit" value="Update" />
+			</form>
+		</div>
+		</br>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</body>
+</html>
+
