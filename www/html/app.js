@@ -56,7 +56,7 @@
 		this.data = {};
 	}
 	});
-	)
+	
 	
 	app.controller("EditDetails", function(User) {
 	
@@ -67,7 +67,16 @@
 		this.data = {};
 	}
 	});
-	)
+	
+	app.controller("ComposeAndSubmitSplatt", function(User) {
+	
+	this.data = {};
+	this.composeSplatt = function(user) {
+		user.u.splatt = this.data.splatt;
+		this.data = {};
+	}
+	});
+	
 	
 
 	// mock data

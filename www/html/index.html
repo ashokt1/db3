@@ -56,6 +56,15 @@
 		</div>
 		</br>
 		
+		<!-- An existing user shall be able to compose and submit a new splatt -->
+		<div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="ComposeAndSubmitSplatt as form" ng-submit="form.composeSplatt(user)">
+				<p> Blurb <input type="text" ng-data="form.data.splatt" /> </p> 
+				<input type="submit" value="Submit" />
+			</form>
+		</div>
+		</br>
+		
 		
 		
 		
