@@ -3,13 +3,13 @@
 	var app = angular.module('splatter-web', ['ngResource']); //creating a module called splatter-web
 	
 	app.factory('User', function($resource) {
-		return $resource('http://ashok.sqrawler.com:3000/users/:id.json');
+		return $resource('http://ashok.sqrawler.com/api/users/:id.json');
 	})	
 		
 	//attaching a controller to our module
 	app.controller('UserController', function(User) {
     // add your user code below
-	
+		//console.log(User); 
 		/* this.hello = "Hello World";
 		this.u = u1;*/
 		this.feed = feed; 
@@ -21,7 +21,7 @@
 	});
 
     // add your form controller below
-	app.controller("UpdateFormController", function() {
+	app.controller('UpdateFormController', function() {
 	
 	this.data = {};
 	
@@ -32,52 +32,92 @@
 
 	});
     // add your form controller above
-	
-	app.controller("CreateNewUser", function(User) {
+		
+	app.controller('ExistingUserSignIn', function(User) {
 	
 	this.data = {};
-	this.createUser = function(user) {
+	this.existingUser = function() {
+		email = this.data.email;
+		password = this.data.password;
+		
+		this.u = User.get({id:this.data.id});
+		this.data = {};
+		console.log(this.u);
+		}
+	});	
+		
+	/* app.controller('CreateNewUser', function(User) {
+	
+	this.data = {};
+	this.createUser = function() {
+		
+		user = new User ({name: this.data.name, email: this.data.email, password: this.data.password});
+		user.$save();
 		user.u.email = this.data.email;
 		user.u.name = this.data.name;
 		user.u.password = this.data.password;
 		
 		this.u = User.save({},user);
+		 
+		this.data = {};
+	};
+	});
 		
-		this.data = {};
-	}
-	});
-	
-	app.controller("ExistingUserSignIn", function(User) {
+	app.controller('EditDetails', function(User) {
 	
 	this.data = {};
-	this.existingUser = function(user) {
-		user.u.email = this.data.email;
-		user.u.password = this.data.password;
+	this.editDetails = function() {
+		user.u.name = this.data.name;
+		user.u.blurb = this.data.blurb;
 		this.data = {};
 	}
 	});
 	
-	
-	app.controller("EditDetails", function(User) {
+	app.controller('ComposeAndSubmitSplatt', function(User) {
 	
 	this.data = {};
-	this.existingUser = function(user) {
-		user.u.email = this.data.email;
-		user.u.password = this.data.password;
+	this.composeSplatt = function() {
+		user.u.body = this.data.body;
 		this.data = {};
 	}
 	});
 	
-	app.controller("ComposeAndSubmitSplatt", function(User) {
+	app.controller('ViewSplattsFeed', function(User) {
 	
 	this.data = {};
-	this.composeSplatt = function(user) {
-		user.u.splatt = this.data.splatt;
+	this.viewSplatt = function() {
+		this.data.splatts-feed = user.u.splatts-feed;
+		this.u = User.get({id:1, splatts-feed}); 
 		this.data = {};
 	}
 	});
 	
+	app.controller('ViewInformation', function(User) {
 	
+	this.data = {};
+	this.viewInfo = function() {
+		user.u.sp = this.data.splatts-feed
+		this.u = User.get({id, splatts-feed}); 
+		this.data = {};
+	}
+	});
+	
+	app.controller('FollowAndUnfollowUsers', function(User) {
+	
+	this.data = {};
+	this.followUser = function() {
+		this.data = {};
+	}
+	});
+	
+	app.controller('DeleteAccount', function(User) {
+	
+	this.data = {};
+	this.followUser = function() {
+		this.data = {};
+	}
+	}); */ 
+	 	
 
 	// mock data
         var u1 = {

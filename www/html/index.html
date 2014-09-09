@@ -5,6 +5,7 @@
 		<script src="angular.min.js"></script>
 		<script src="angular-resource.js"></script>
 		<script src="app.js"></script>
+		<meta charset="UTF-8">
 	</head>
 	<body>
 		<div ng-controller="UserController as user">
@@ -25,45 +26,99 @@
 			
 		</div>
 		
-		<!-- A new user shall be able to create an account -->
-		<div style="border:2px solid; padding: 5px 5px 5px 5px">
-			<form name="myForm" ng-controller="CreateNewUser as form" ng-submit="form.createUser(user)">
-				<p> E-mail address: <input type="email" ng-data="form.data.email" />  </p>
-				<p> Name: </label> <input type="text" ng-data="form.data.name" /> </p>
-				<p> Password: </label> <input type="password" ng-data="form.data.password" /> </p>	
-				<input type="submit" value="Create New User" />
-			</form>
-		</div>
-		</br>
-				
-		<!-- An existing user shall be able to sign in -->
-		<div style="border:2px solid; padding: 5px 5px 5px 5px">
+		<!-- Show form -->
+		<div>
 			<form name="myForm" ng-controller="ExistingUserSignIn as form" ng-submit="form.existingUser(user)">
-				<p> E-mail address: </label> <input type="email" ng-data="form.data.email" /> </p> 
-				<p> Password: </label> <input type="password" ng-data="form.data.password" /> </p> 
-				<input type="submit" value="Sign In" />
+				<fieldset> 
+					<p> Email <input type="email" ng-data="form.data.email"/> </p>
+					<p> Password <input type="password" ng-data="form.data.password"/> </p>
+					<input type="submit" value="Sign In"> 
+				</fieldset>
 			</form>
 		</div>
 		</br>
 		
+		<!-- A new user shall be able to create an account -->
+		<!-- <div>
+			<form name="myForm" ng-controller="CreateNewUser as form" ng-submit="form.createUser(user)">
+				<fieldset> 
+					<p> Email: <input type="email" ng-data="form.data.email" />  </p>
+					<p> Name: </label> <input type="text" ng-data="form.data.name" /> </p>
+					<p> Password: </label> <input type="password" ng-data="form.data.password" /> </p>	
+					<input type="submit" value="Create Account" />
+				</fieldset> 
+			</form>
+		</div>
+		</br> -->
+				
+				
 		<!-- An existing user shall be able to edit name and blurb fields -->
-		<div style="border:2px solid; padding: 5px 5px 5px 5px">
+		<!-- <div style="border:2px solid; padding: 5px 5px 5px 5px">
 			<form name="myForm" ng-controller="EditDetails as form" ng-submit="form.editDetails(user)">
 				<p> Name <input type="name" ng-data="form.data.name" /> </p> 
 				<p> Blurb <input type="text" ng-data="form.data.blurb" /> </p> 
 				<input type="submit" value="Update" />
 			</form>
 		</div>
-		</br>
+		</br> -->
 		
 		<!-- An existing user shall be able to compose and submit a new splatt -->
-		<div style="border:2px solid; padding: 5px 5px 5px 5px">
+		<!-- <div style="border:2px solid; padding: 5px 5px 5px 5px">
 			<form name="myForm" ng-controller="ComposeAndSubmitSplatt as form" ng-submit="form.composeSplatt(user)">
-				<p> Blurb <input type="text" ng-data="form.data.splatt" /> </p> 
+				<p> Splatt <input type="text" ng-data="form.data.body" /> </p> 
 				<input type="submit" value="Submit" />
 			</form>
 		</div>
-		</br>
+		</br> -->
+		
+		<!-- An existing user shall be able to see his splatts feed -->
+		<!-- <div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="ViewSplattsFeed as form" ng-submit="form.viewSplatt(user)">
+				<p> Splatt <input type="text" ng-data="form.data.body" /> </p> 
+				<input type="submit" value="View Splatts" />
+			</form>
+		</div>
+		</br> -->
+		
+		<!-- A user whether signed in or not, shall be able to view others information and splatts -->
+		<!-- <div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="ViewInformation as form" ng-submit="form.viewInfo(user)">
+				<p> Splatt <input type="text" ng-data="form.data.body" /> </p> 
+				<input type="submit" value="View Information" />
+			</form>
+		</div>
+		</br> -->
+		
+		<!-- An existing user shall be able to follow and unfollow other users -->
+		<!-- <div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="FollowAndUnfollowUsers as form" ng-submit="form.followUser(user)">
+				<p> Splatt <input type="text" ng-data="form.data.body" /> </p> 
+				<input type="submit" value="Follow" />
+				<input type="submit" value="Unfollow" />
+				
+			</form>
+		</div>
+		</br> -->
+		
+		<!-- An existing user shall be able to delete her account -->
+		<!-- <div style="border:2px solid; padding: 5px 5px 5px 5px">
+			<form name="myForm" ng-controller="ViewInformation as form" ng-submit="form.viewInfo(user)">
+				<p> Splatt <input type="text" ng-data="form.data.body" /> </p> 
+				<input type="submit" value="View Information" />
+			</form>
+		</div>
+		</br> -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
