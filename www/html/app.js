@@ -11,10 +11,10 @@
     // add your user code below
 		//console.log(User); 
 		/* this.hello = "Hello World";
-		this.u = u1;*/
-		this.feed = feed; 
+		this.u = u1;
+		this.feed = feed;  */
 		
-		this.u = User.get({id:1});
+		this.u = User.get({id:1}); //displays "Tanvi Ashok"
 
 
 	// add your user code above	
@@ -37,16 +37,15 @@
 	
 	this.data = {};
 	this.existingUser = function() {
-		email = this.data.email;
+		//id = this.data.id;
 		password = this.data.password;
 		
 		this.u = User.get({id:this.data.id});
 		this.data = {};
-		console.log(this.u);
 		}
 	});	
 		
-	/* app.controller('CreateNewUser', function(User) {
+	app.controller('CreateNewUser', function(User) {
 	
 	this.data = {};
 	this.createUser = function() {
@@ -60,9 +59,9 @@
 		this.u = User.save({},user);
 		 
 		this.data = {};
-	};
+	}
 	});
-		
+	/*	
 	app.controller('EditDetails', function(User) {
 	
 	this.data = {};

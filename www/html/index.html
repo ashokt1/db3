@@ -10,12 +10,12 @@
 	<body>
 		<div ng-controller="UserController as user">
 			<!-- Add your HTML and Angular code below -->
-				<p> {{user.hello}} </p>
+				<!-- <p> {{user.hello}} </p> -->
 				<p> {{user.u.name}} </p>
 				
-			<div ng-repeat="splatt in user.feed">
+			<!-- <div ng-repeat="splatt in user.feed">
 				<p> {{splatt.body}} </p>
-			</div>
+			</div>  -->
 			
 			<form name="myForm" ng-controller="UpdateFormController as form" ng-submit="form.updateUser(user)">
 				<input type="text" ng-data="form.data.name" />
@@ -28,18 +28,20 @@
 		
 		<!-- Show form -->
 		<div>
-			<form name="myForm" ng-controller="ExistingUserSignIn as form" ng-submit="form.existingUser(user)">
+			<form name="myForm" ng-controller="ExistingUserSignIn as form" ng-submit="form.existingUser()">
 				<fieldset> 
-					<p> Email <input type="email" ng-data="form.data.email"/> </p>
-					<p> Password <input type="password" ng-data="form.data.password"/> </p>
-					<input type="submit" value="Sign In"> 
+					<p> ID <input type="text" ng-model="form.data.id"/> </p> 
+					<p> Password <input type="password" ng-model="form.data.password"/> </p>
+					<input type="submit" value="Sign In">  <p> {{form.u.name}} </p>
+				
 				</fieldset>
 			</form>
+			
 		</div>
 		</br>
 		
 		<!-- A new user shall be able to create an account -->
-		<!-- <div>
+		<div>
 			<form name="myForm" ng-controller="CreateNewUser as form" ng-submit="form.createUser(user)">
 				<fieldset> 
 					<p> Email: <input type="email" ng-data="form.data.email" />  </p>
@@ -49,7 +51,7 @@
 				</fieldset> 
 			</form>
 		</div>
-		</br> -->
+		</br> 
 				
 				
 		<!-- An existing user shall be able to edit name and blurb fields -->
