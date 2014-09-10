@@ -19,94 +19,123 @@
 		}
 	)})	;
 		
-	//attaching a controller to our module
+	/* attaching a controller to our module
 	app.controller('UserController', function(User) {
-    // add your user code below
-		//console.log(User); 
-		/* this.hello = "Hello World";
+    add your user code below
+		console.log(User); 
+		 this.hello = "Hello World";
 		this.u = u1;
-		this.feed = feed;  */
+		this.feed = feed;  
 		
 		this.u = User.get({id:1}); //displays "Tanvi Ashok"
 
 
-	// add your user code above	
+	 add your user code above	
 	});
 
-    // add your form controller below
+    add your form controller below
 	app.controller('UpdateFormController', function() {
 	
 	this.data = {};
 	
 	this.updateUser = function(user) {
 		user.u.name = this.data.name;
-		this.data = {}; //clears the form
+		this.data = {}; clears the form
 		}
 
 	}); 
-    // add your form controller above
-		
+    add your form controller above */
+	
+	/*  A new user shall be able to create an account */  
+	app.controller('CreateNewUser', function(User) {
+	
+	this.data = {};
+	this.createUser = function() {
+	
+	User.save ({user:{name: this.data.name, email: this.data.email, password: this.data.password}});
+	alert ("New account created");
+	this.data = {};
+	}
+	});	
+	
+	/* An existing user shall be able to "sign in" */
 	app.controller('ExistingUser', function(User) {
 	
 	this.data = {};
 	this.existingUser = function() {
-		//id = this.data.id;
-		password = this.data.password;
+	//id = this.data.id;
+	password = this.data.password;
 		
-		this.u = User.get({id:this.data.id});
-		
-		this.data = {};
-		}
-	});
-	
-	app.controller('ViewSplattsFeed', function(User) {
-	
+	this.u = User.get({id:this.data.id});
 	this.data = {};
-	this.viewSplatt = function() {
-		splatts_feed = this.data.splatts_feed;
-		
-		this.splatts_feed = User.listSplatt({id:this.data.id});
-		this.data = {};
-		
 	}
 	});
 	
+	/* An existing user shall be able to edit her name and blurb fields */
 	app.controller('EditUser', function(User) {
 	
 	this.data = {};
 	
 	this.editUser = function() {
-		var name = this.data.name;
-		var blurb = this.data.blurb;
+	var name = this.data.name;
+	var blurb = this.data.blurb;
 		
-		this.u = User.get({id:this.data.id});
-		this.u = User.update({id:this.data.id}, {user:{blurb:this.data.blurb, name:this.data.name}});
-		this.data = {};
-		}
-		
+	this.u = User.get({id:this.data.id});
+	this.u = User.update({id:this.data.id}, {user:{blurb:this.data.blurb, name:this.data.name}});
+	this.data = {};
+	}
+	
 	this.getUser = function() {
-		 User.get({id:this.data.id},function(user){
-		 this.data.blurb=user.blurb;
-		 this.data.name=user.name;
-		 });
-		}
+	User.get({id:this.data.id},function(user){
+	this.data.blurb=user.blurb;
+	this.data.name=user.name;
 	});
 	
+	}
+	});
+	
+	/* An existing user shall be able to compose and submit a new splatt */
 	app.controller('ComposeAndSubmitSplatt', function(Splatt) {
 	
 	this.data = {};
 	this.composeSplatt = function() {
 	
-		var body = this.data.body;
-		var id = this.data.id;
-		
-		Splatt.save({splatt:{body:body, user_id:id}});
-		this.data = {};
+	var body = this.data.body;
+	var id = this.data.id;
+	
+	Splatt.save({splatt:{body:body, user_id:id}});
+	this.data = {};
 		
 	}
 	});
 	
+	/* An existing user shall be able to see his splatts feed  */
+	app.controller('ViewSplattsFeed', function(User) {
 	
+	this.data = {};
+	this.viewSplatt = function() {
+	splatts_feed = this.data.splatts_feed;
+		
+	this.splatts_feed = User.listSplatt({id:this.data.id});
+	this.data = {};
+	}
+	});
+	
+	/* A user whether signed in or not, shall be able to view others information and splatts  */
+	app.controller('ViewInformation', function(User) {
+	
+	this.data = {};
+	this.viewInfo = function() {
+		var user_id = this.data.id;
+	
+		this.u = User.get({id:user_id});
+		this.splatts = User.splatts({id:user_id});
+		
+		this.data = {};
+	}
+	});	
+	
+	/* An existing user shall be able to follow other users	 */
 	app.controller('FollowUsers', function(User) {
 	
 	this.data = {};
@@ -120,6 +149,7 @@
 	}
 	});
 	
+	/* An existing user shall be able to unfollow other users */
 	app.controller('UnfollowUsers', function(User) {
 	
 	this.data = {};
@@ -133,34 +163,7 @@
 	}
 	});
 	
-	
-	app.controller('ViewInformation', function(User) {
-	
-	this.data = {};
-	this.viewInfo = function() {
-		var user_id = this.data.id;
-	
-		this.u = User.get({id:user_id});
-		this.splatts = User.splatts({id:user_id});
-		
-		this.data = {};
-	}
-	});
-	
-	
-	app.controller('CreateNewUser', function(User) {
-	
-	this.data = {};
-	this.createUser = function() {
-		
-		User.save ({user:{name: this.data.name, email: this.data.email, password: this.data.password}});
-			
-		alert ("New account created");
-		this.data = {};
-	}
-	});
-	
-	
+	/* An existing user shall be able to delete her account */	
 	app.controller('DeleteAccount', function(User) {
 	
 	this.data = {};
