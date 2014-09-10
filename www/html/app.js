@@ -3,8 +3,21 @@
 	var app = angular.module('splatter-web', ['ngResource']); //creating a module called splatter-web
 	
 	app.factory('User', function($resource) {
-		return $resource('http://ashok.sqrawler.com/api/users/:id.json');
-	})	
+		return $resource('http://ashok.sqrawler.com/api/users/:id.json', {}, {
+		update: {method:'PUT', url:'http://ashok.sqrawler.com/api/users/:id.json'},
+		listSplatt: {method:'GET', url:'http://ashok.sqrawler.com/api/users/splatts-feed/:id',isArray:true},
+		follow: {method:'POST', url:'http://ashok.sqrawler.com/api/users/follows.json'},
+		unfollow: {method:'DELETE', url:'http://ashok.sqrawler.com/api/users/follows/:id/:follows_id'},
+		splatts: {method:'GET', url:'http://ashok.sqrawler.com/api/users/splatts/:id',isArray:true},
+		deleteUser: {method:'DELETE', url:'http://ashok.sqrawler.com/api/users/:id.json'}
+		}
+	)})	;
+	
+	app.factory('Splatt', function($resource) {
+		return $resource('http://ashok.sqrawler.com/api/splatts/:id.json', {}, {
+		save: {method:'POST', url:'http://ashok.sqrawler.com/api/splatts'}
+		}
+	)})	;
 		
 	//attaching a controller to our module
 	app.controller('UserController', function(User) {
@@ -30,10 +43,10 @@
 		this.data = {}; //clears the form
 		}
 
-	});
+	}); 
     // add your form controller above
 		
-	app.controller('ExistingUserSignIn', function(User) {
+	app.controller('ExistingUser', function(User) {
 	
 	this.data = {};
 	this.existingUser = function() {
@@ -41,81 +54,122 @@
 		password = this.data.password;
 		
 		this.u = User.get({id:this.data.id});
+		
 		this.data = {};
 		}
-	});	
-		
-	app.controller('CreateNewUser', function(User) {
-	
-	this.data = {};
-	this.createUser = function() {
-		
-		user = new User ({name: this.data.name, email: this.data.email, password: this.data.password});
-		user.$save();
-		user.u.email = this.data.email;
-		user.u.name = this.data.name;
-		user.u.password = this.data.password;
-		
-		this.u = User.save({},user);
-		 
-		this.data = {};
-	}
-	});
-	/*	
-	app.controller('EditDetails', function(User) {
-	
-	this.data = {};
-	this.editDetails = function() {
-		user.u.name = this.data.name;
-		user.u.blurb = this.data.blurb;
-		this.data = {};
-	}
-	});
-	
-	app.controller('ComposeAndSubmitSplatt', function(User) {
-	
-	this.data = {};
-	this.composeSplatt = function() {
-		user.u.body = this.data.body;
-		this.data = {};
-	}
 	});
 	
 	app.controller('ViewSplattsFeed', function(User) {
 	
 	this.data = {};
 	this.viewSplatt = function() {
-		this.data.splatts-feed = user.u.splatts-feed;
-		this.u = User.get({id:1, splatts-feed}); 
+		splatts_feed = this.data.splatts_feed;
+		
+		this.splatts_feed = User.listSplatt({id:this.data.id});
+		this.data = {};
+		
+	}
+	});
+	
+	app.controller('EditUser', function(User) {
+	
+	this.data = {};
+	
+	this.editUser = function() {
+		var name = this.data.name;
+		var blurb = this.data.blurb;
+		
+		this.u = User.get({id:this.data.id});
+		this.u = User.update({id:this.data.id}, {user:{blurb:this.data.blurb, name:this.data.name}});
+		this.data = {};
+		}
+		
+	this.getUser = function() {
+		 User.get({id:this.data.id},function(user){
+		 this.data.blurb=user.blurb;
+		 this.data.name=user.name;
+		 });
+		}
+	});
+	
+	app.controller('ComposeAndSubmitSplatt', function(Splatt) {
+	
+	this.data = {};
+	this.composeSplatt = function() {
+	
+		var body = this.data.body;
+		var id = this.data.id;
+		
+		Splatt.save({splatt:{body:body, user_id:id}});
+		this.data = {};
+		
+	}
+	});
+	
+	
+	app.controller('FollowUsers', function(User) {
+	
+	this.data = {};
+	this.followUser = function() {
+		var user_id = this.data.id;
+		var follows_id = this.data.follows_id;
+		
+		 User.follow({id:user_id, follows_id:follows_id});
+		
 		this.data = {};
 	}
 	});
+	
+	app.controller('UnfollowUsers', function(User) {
+	
+	this.data = {};
+	this.unfollowUser = function() {
+		var user_id = this.data.id;
+		var follows_id = this.data.follows_id;
+		
+		User.unfollow({id:user_id, follows_id:follows_id});
+		
+		this.data = {};
+	}
+	});
+	
 	
 	app.controller('ViewInformation', function(User) {
 	
 	this.data = {};
 	this.viewInfo = function() {
-		user.u.sp = this.data.splatts-feed
-		this.u = User.get({id, splatts-feed}); 
+		var user_id = this.data.id;
+	
+		this.u = User.get({id:user_id});
+		this.splatts = User.splatts({id:user_id});
+		
 		this.data = {};
 	}
 	});
 	
-	app.controller('FollowAndUnfollowUsers', function(User) {
+	
+	app.controller('CreateNewUser', function(User) {
 	
 	this.data = {};
-	this.followUser = function() {
+	this.createUser = function() {
+		
+		User.save ({user:{name: this.data.name, email: this.data.email, password: this.data.password}});
+			
+		alert ("New account created");
 		this.data = {};
 	}
 	});
+	
 	
 	app.controller('DeleteAccount', function(User) {
 	
 	this.data = {};
-	this.followUser = function() {
+	this.deleteUser = function() {
+		var user_id = this.data.id;
+		User.deleteUser({id:user_id});
 		this.data = {};
 	}
-	}); */ 
+	}); 
 	 	
 
 	// mock data
@@ -153,3 +207,5 @@
 	 }
        ];
 })();
+
+       
