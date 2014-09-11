@@ -8,28 +8,43 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
-		<div ng-controller="UserController as user">
-			<!-- Add your HTML and Angular code below -->
-				<!-- <p> {{user.hello}} </p> -->
+		<!---<div ng-controller="UserController as user">
+			Add your HTML and Angular code below
+				<p> {{user.hello}} </p>
 				<p> {{user.u.name}} </p>
 				
-			<!-- <div ng-repeat="splatt in user.feed">
+			<div ng-repeat="splatt in user.feed">
 				<p> {{splatt.body}} </p>
-			</div>  -->
+			</div> 
 			
 			<form name="myForm" ng-controller="UpdateFormController as form" ng-submit="form.updateUser(user)">
 				<input type="text" ng-data="form.data.name" />
 				<input type="submit" value="Update user" />
 			</form>
 			
-			<!-- Add your HTML and Angular code above -->
+			 Add your HTML and Angular code above 
 			
-		</div>
+		</div>-->
 		
-		<!-- Show form -->
+		<!-- A new user shall be able to create an account  -->
+		<div>
+			<form name="myForm" ng-controller="CreateNewUser as form" ng-submit="form.createUser()">
+				<fieldset> 
+				<legend> Create a new account </legend>
+					<p> Email: <input type="email" ng-model="form.data.email" />  </p>
+					<p> Name: </label> <input type="text" ng-model="form.data.name" /> </p>
+					<p> Password: </label> <input type="password" ng-model="form.data.password" /> </p>	
+					<input type="submit" value="Create Account" />
+				</fieldset> 
+			</form>
+		</div>
+		</br> 
+		
+		<!-- An existing user shall be able to "sign in" -->
 		<div ng-controller="ExistingUser as form">
 			<form name="myForm"  ng-submit="form.existingUser()">
-				<fieldset> 
+				<fieldset>
+				<legend> Sign in </legend>		
 					<p> ID <input type="text" ng-model="form.data.id"/> </p> 
 					<p> Password <input type="password" ng-model="form.data.password"/> </p>
 					<input type="submit" value="Sign In">  
@@ -42,10 +57,11 @@
 		</div>
 		</br>
 		
-		<!-- 	Edit User -->
+		<!-- An existing user shall be able to edit her name and blurb fields -->
 		<div>
 			<form name="myForm" ng-controller="EditUser as form" ng-submit="form.editUser()">
 				<fieldset>
+				<legend> Update name and blurb fields </legend>
 					<p> ID <input type="text" ng-model="form.data.id" ng-change="form.getUser()"/> </p> 
 					<p> Blurb <input type="text" ng-model="form.data.blurb"/> </p> 
 					<p> Name <input type="text" ng-model="form.data.name"/> </p> <input type="submit" value="Update">
@@ -55,10 +71,24 @@
 		</div>
 		</br> 
 		
+		<!-- An existing user shall be able to compose and submit a new splatt -->
+		 <div>
+			<form name="myForm" ng-controller="ComposeAndSubmitSplatt as form" ng-submit="form.composeSplatt()">
+				<fieldset>
+				<legend> Compose and Submit a new splatt </legend>
+					<p> ID <input type="text" ng-model="form.data.id"/> </p> 
+					<p> Splatt <input type="text" ng-model="form.data.body" /> </p> 
+					<input type="submit" value="Submit" />
+				</fieldset>
+			</form>
+		</div>
+		</br> 
+		
 		<!-- An existing user shall be able to see his splatts feed -->
 		 <div >
 			<form name="myForm" ng-controller="ViewSplattsFeed as form" ng-submit="form.viewSplatt()">
 				<fieldset>
+				<legend> View splatts feed </legend>
 					<p> ID <input type="text" ng-model="form.data.id"/> </p> 
 					<input type="submit" value="View Splatts" />
 						<div ng-repeat="Splatt in form.splatts_feed"> 
@@ -69,22 +99,29 @@
 		</div>
 		</br>  
 		
-		<!-- An existing user shall be able to compose and submit a new splatt -->
-		 <div>
-			<form name="myForm" ng-controller="ComposeAndSubmitSplatt as form" ng-submit="form.composeSplatt()">
+		<!-- A user whether signed in or not, shall be able to view others information and splatts -->
+		<div ng-controller="ViewInformation as form">
+			<form name="myForm" ng-submit="form.viewInfo()">
 				<fieldset>
+				<legend> View another user's information </legend>
 					<p> ID <input type="text" ng-model="form.data.id"/> </p> 
-					<p> Splatt <input type="text" ng-model="form.data.body" /> </p> 
-					<input type="submit" value="Submit" />
+					<input type="submit" value="View Information" />
+					<p> {{form.u.name}} </p>
+					<p> {{form.u.email}} </p>
+									
 				</fieldset>
 			</form>
+				<div ng-repeat="Splatt in form.splatts"> 
+					<p> {{Splatt.body}} </p>
+				</div>
 		</div>
-		</br> 
+		</br>
 		
 		<!-- An existing user shall be able to follow other users -->
 		<div>
 			<form name="myForm" ng-controller="FollowUsers as form" ng-submit="form.followUser()">
 				<fieldset>
+				<legend> Follow another user </legend>
 					<p> User ID <input type="text" ng-model="form.data.id" /> </p> 
 					<p> Follows ID <input type="text" ng-model="form.data.follows_id" /> </p> 
 					<input type="submit" value="Follow" />
@@ -97,6 +134,7 @@
 		<div>
 			<form name="myForm" ng-controller="UnfollowUsers as form" ng-submit="form.unfollowUser()">
 				<fieldset>
+				<legend> Unfollow another user </legend>
 					<p> User ID <input type="text" ng-model="form.data.id" /> </p> 
 					<p> Follows ID <input type="text" ng-model="form.data.follows_id" /> </p> 
 					<input type="submit" value="Unfollow" />
@@ -104,45 +142,15 @@
 			</form>
 		</div>
 		</br> 
-		
-		<!-- A user whether signed in or not, shall be able to view others information and splatts -->
-		<div ng-controller="ViewInformation as form">
-			<form name="myForm" ng-submit="form.viewInfo()">
-				<fieldset>
-					<p> ID <input type="text" ng-model="form.data.id"/> </p> 
-					<input type="submit" value="View Information" />
-								
-							<p> {{form.u.name}} </p>
-										
-							<p> {{form.u.email}} </p>
-												
-				</fieldset>
-			</form>
-					<div ng-repeat="Splatt in form.splatts"> 
-								<p> {{Splatt.body}} </p>
-					</div>
-		</div>
-		</br>
-		
-		
-		<!-- A new user shall be able to create an account  -->
-		<div>
-			<form name="myForm" ng-controller="CreateNewUser as form" ng-submit="form.createUser()">
-				<fieldset> 
-					<p> Email: <input type="email" ng-model="form.data.email" />  </p>
-					<p> Name: </label> <input type="text" ng-model="form.data.name" /> </p>
-					<p> Password: </label> <input type="password" ng-model="form.data.password" /> </p>	
-					<input type="submit" value="Create Account" />
-				</fieldset> 
-			</form>
-		</div>
-		</br> 
-		
+				
 		<!-- An existing user shall be able to delete her account -->
 		 <div>
 			<form name="myForm" ng-controller="DeleteAccount as form" ng-submit="form.deleteUser()">
+				<fieldset>
+				<legend> Delete an account </legend>
 				<p> ID <input type="text" ng-model="form.data.id" /> </p> 
 				<input type="submit" value="Delete User" />
+				</fieldset>
 			</form>
 		</div>
 		
