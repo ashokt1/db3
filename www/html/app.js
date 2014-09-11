@@ -67,6 +67,7 @@
 	password = this.data.password;
 		
 	this.u = User.get({id:this.data.id});
+	alert("Signed In!");
 	this.data = {};
 	}
 	});
@@ -90,7 +91,7 @@
 	this.data.blurb=user.blurb;
 	this.data.name=user.name;
 	});
-	
+	alert("User details have been updated!");
 	}
 	});
 	
@@ -104,6 +105,7 @@
 	var id = this.data.id;
 	
 	Splatt.save({splatt:{body:body, user_id:id}});
+	alert("Splatt has been submitted!");
 	this.data = {};
 		
 	}
@@ -170,6 +172,7 @@
 	this.deleteUser = function() {
 		var user_id = this.data.id;
 		User.deleteUser({id:user_id});
+		alert("Account has been deleted!");
 		this.data = {};
 	}
 	}); 
