@@ -92,8 +92,8 @@ before_filter :set_headers
 		@user = User.find(params[:id])
 		@follows = User.find(params[:follows_id])
 		
-		if @user.follows << @follows and @follows.follower << @user
-			head :no_content
+		if @user.follows << @follows and @follows.followers << @user
+			# head :no_content
 			render json: @user.follows
 		else
 			render json: @user.errors, status: :unprocessable_entity
@@ -104,16 +104,25 @@ before_filter :set_headers
 	def delete_follows
 	
 		#make a follower
-		@follower = User.find(params[:id])
+		# @follower = User.find(params[:id])
 		
 		#make a followed
-		@followed= User.find(params[:follows_id])
+		# @followed= User.find(params[:follows_id])
 		
 		#deleting from list
-		if @follower.follows.destroy(@followed)
-			head :no_content
-		else
-			render json: @follower.errors, status: :unprocessable_entity
+		# if @follower.follows.destroy(@followed)
+			# head :no_content
+		# else
+			# render json: @follower.errors, status: :unprocessable_entity
+		# end
+		
+		@user = User.find(params[:id])
+		@follows = User.find(params[:follows_id])
+		
+		if @user.follows.delete(@follows) << @follows.followers.delete(@user)
+			render json: @user.follows.destroy
+		else 
+			render json: @user.errors, status: :unprocessable_entity
 		end
 	end
 	
