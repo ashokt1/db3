@@ -77,16 +77,26 @@ before_filter :set_headers
 		#params[:follows_id] user to be followed
 		
 		#make follower
-		@follower = User.find(params[:id])
+		# @follower = User.find(params[:id])
 		
 		#make followed
-		@followed = User.find(params[:follows_id])
+		# @followed = User.find(params[:follows_id])
 		
 		#adding to list, follows is a list of user objects
-		if @follower.follows << @followed
-			head :no_content 
+		# if @follower.follows << @followed
+			# head :no_content 
+		# else
+			# render json: @follower.errors, status: :unprocessable_entity
+		# end
+		
+		@user = User.find(params[:id])
+		@follows = User.find(params[:follows_id])
+		
+		if @user.follows << @follows and @follows.follower << @user
+			head :no_content
+			render json: @user.follows
 		else
-			render json: @follower.errors, status: :unprocessable_entity
+			render json: @user.errors, status: :unprocessable_entity
 		end
 	end
 
