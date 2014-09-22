@@ -134,6 +134,29 @@ before_filter :set_headers
 		 render json: @feed
 	 end
 	
+	
+	def splatts_count
+		map = %Q{ function () {
+			var length = 0;
+			if(this.splatts) {
+				length = this.splatts.length
+			}
+			emit("count", length);
+		}
+		}
+		
+		reduce = %Q{ function(key, val) {
+			var data = 0;
+			val.forEach(function(v) {
+				data += v;
+			})
+			return data;
+		}
+		}
+		
+		User.map_reduce(map,reduce).out(inline: true)
+	end
+	
   private
 	def user_params(params)
 	params.permit(:email, :password, :name, :blurb)
