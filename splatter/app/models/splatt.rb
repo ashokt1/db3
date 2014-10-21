@@ -1,3 +1,7 @@
-class Splatt < ActiveRecord::Base
-  belongs_to :user
+class Splatt < Hashie::Dash
+
+property :id
+property :body
+property :created_at
+  
 end
