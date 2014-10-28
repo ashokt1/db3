@@ -69,7 +69,6 @@ end
   end
 	
 	
-	
  # Users followed by the indicated user
 	def show_follows
 		@user = User.find(params[:id])
@@ -82,22 +81,33 @@ end
 		render json: @user.followed_by #followers of a given user
 	end
 
+	#POST /users/follows
  # Add user to list of users followed by user with id
 	def add_follows
 		#params[:id] is the user who follows
 		#params[:follows_id] user to be followed
 		
 		#make follower
-		@follower = User.find(params[:id])
+		# @follower = User.find(params[:id])
 		
 		#make followed
-		@followed = User.find(params[:follows_id])
+		# @followed = User.find(params[:follows_id])
 		
 		#adding to list, follows is a list of user objects
-		if @follower.follows << @followed
-			head :no_content 
+		# if @follower.follows << @followed
+			# head :no_content 
+		# else
+			# render json: @follower.errors, status: :unprocessable_entity
+		# end
+		
+		db = UserRepository.new(Riak::Client.new)
+		@follower = db.find(params[:id])
+		@followed = db.find(params[:follows_id])
+		
+		if db.follow(@follower, @followed)
+			head: no_content
 		else
-			render json: @follower.errors, status: :unprocessable_entity
+			render json: "error saving follow relationship", status: :unprocessable_entity
 		end
 	end
 
@@ -105,17 +115,27 @@ end
 	def delete_follows
 	
 		#make a follower
-		@follower = User.find(params[:id])
+		# @follower = User.find(params[:id])
 		
 		#make a followed
-		@followed= User.find(params[:follows_id])
+		# @followed= User.find(params[:follows_id])
 		
 		#deleting from list
-		if @follower.follows.destroy(@followed)
+		# if @follower.follows.destroy(@followed)
+			# head :no_content
+		# else
+			# render json: @follower.errors, status: :unprocessable_entity
+		# end
+		
+		db = UserRepository.new(Riak::Client.new)
+		@follower = db.find(params[:id])
+		@followed = db.find(params[:follows_id])
+		
+		if db.follow.delete(@follower, @followed)
 			head :no_content
 		else
-			render json: @follower.errors, status: :unprocessable_entity
-		end
+			render json: "error deleting unfollow relationship", status: :unprocessable_entity
+		end	
 	end
 	
 	# GET /users/splatts-feed/1
@@ -134,6 +154,5 @@ end
 	def set_headers
 	headers['Access-Control-Allow-Origin'] = '*';
 	end	
-	
- 
+
 end

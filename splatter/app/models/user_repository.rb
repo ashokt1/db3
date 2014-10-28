@@ -7,6 +7,21 @@ def initialize(client)
 end
 
 def all
+	keys = @client.bucket(@bucket).keys
+	riak_list = @client.bucket(@bucket).get_many(keys)
+	
+	results = []
+	riak_list.values.each do |user_obj|
+		user = User.new
+		user.email = user_obj.data['email']
+		user.name = user_obj.data['name']
+		user.password = user_obj.data['password']
+		user.blurb = user_obj.data['blurb']
+		user.follows = user_obj.data['follows']
+		user.followers = user_obj.data['followers']
+		results.push(user)
+	end
+	results
 end
 
 def delete(user)
@@ -37,6 +52,32 @@ def save(user)
 end
 
 def update(user)
+end
+
+def follow(follower, followed)
+	if follower.follows
+		follower.follows << followed.email
+	else
+		follower.followed = [followed.email]
+	end
+	
+	if followed.followers
+		followed.followers << follower.email
+	else
+		followed.followers = [follows.email]
+	end
+	
+	update(followed)
+	update(follower)
+end
+
+def unfollow(follower, followed)
+	follower.follows.delete(followed.email)
+	followed.follows.delete(follower.email)
+	
+	update(followed)
+	update(follower)
+	
 end
 
 end
