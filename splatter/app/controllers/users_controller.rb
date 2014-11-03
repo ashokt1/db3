@@ -115,6 +115,9 @@ before_filter :set_headers
 		 render json: @feed
 	 end
 	
+			
+	
+	
   private
 	def user_params(params)
 	params.permit(:email, :password, :name, :blurb)
