@@ -7,24 +7,17 @@ def initialize(client)
 end
 
 def all
-	keys = @client.bucket(@bucket).keys
-	riak_list = @client.bucket(@bucket).get_many(keys)
+	user_keys = @client.bucket(BUCKET).keys
+	users ||= []
 	
-	results = []
-	riak_list.values.each do |user_obj|
-		user = User.new
-		user.email = user_obj.data['email']
-		user.name = user_obj.data['name']
-		user.password = user_obj.data['password']
-		user.blurb = user_obj.data['blurb']
-		user.follows = user_obj.data['follows']
-		user.followers = user_obj.data['followers']
-		results.push(user)
+	user_keys.each do |key|
+		users << find(key)
 	end
-	results
+	users
 end
 
 def delete(user)
+	@client.bucket(BUCKET).delete(user)
 end
 
 def find(key)
@@ -52,23 +45,51 @@ def save(user)
 end
 
 def update(user)
+	riak_obj = @client.bucket(BUCKET)[user.email]
+	riak_obj.data['name'] = user.name
+	riak_obj.data['blurb'] = user.blurb
+	riak_obj.data['password'] = user.password
+	riak_obj.data['follows'] = user.follows
+	riak_obj.data['followers'] = user.followers
+	riak_obj.store
+end
+
+def show_follows(key)
+	@user = find(key)
+	@follows = []
+	if @user.follows
+		@user.follows.each do |following|
+			@follows << find(following)
+		end
+	end
+	return @follows
+end
+
+def show_followers(key)
+	@user = find(key)
+	@followers = []
+	@user.followers.each do |follower|
+		@followers << find(follower)
+	end
+	return @followers
 end
 
 def follow(follower, followed)
 	if follower.follows
 		follower.follows << followed.email
 	else
-		follower.followed = [followed.email]
+		follower.follows = [followed.email]
 	end
 	
 	if followed.followers
 		followed.followers << follower.email
 	else
-		followed.followers = [follows.email]
+		followed.followers = [follower.email]
 	end
 	
-	update(followed)
 	update(follower)
+	update(followed)
+
 end
 
 def unfollow(follower, followed)

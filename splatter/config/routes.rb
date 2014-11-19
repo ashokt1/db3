@@ -2,19 +2,20 @@ Splatter::Application.routes.draw do
   resources :splatts, except: [:new, :edit]
   
   get 'users/:id' => 'users#show', :constraints => {:id => /[0-9a-zA-Z\-\.\@]+/}
-  
-  resources :users, except: [:new, :edit]
-  
+    
   get 'users/splatts/:id' => 'users#splatts', :constraints => {:id => /[0-9a-zA-Z\-\.\@]+/}
   
-  get 'users/follows/:id' => 'users#show_follows'
-  get 'users/followers/:id' => 'users#show_followers'
-  post 'users/follows' => 'users#add_follows'
-  delete 'users/follows/:id/:follows_id' => 'users#delete_follows'
+  get 'users/follows/:id' => 'users#show_follows', :constraints => {:id => /[0-9a-zA-Z\-\.\@]+/}
+  get 'users/followers/:id' => 'users#show_followers', :constraints => {:id => /[0-9a-zA-Z\-\.\@]+/}
+  post 'users/follows' => 'users#add_follows', :constraints => {:id => /[0-9a-zA-Z\-\.\@]+/}
+  delete 'users/follows/:id/:follows_id' => 'users#delete_follows', :constraints => {:id => /[0-9a-zA-Z\-\.\@]+/}
   
   get 'users/splatts-feed/:id' => 'users#splatts_feed'
   
+  put 'users' => 'users#update'
   post 'splatts/' => 'splatts#create'
+  
+  resources :users, except: [:new, :edit]
   # post 'splatts'
   
   # The priority is based upon order of creation: first created -> highest priority.
